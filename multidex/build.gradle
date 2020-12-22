@@ -1,0 +1,62 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        applicationId "me.hexile.sara.multidex"
+        minSdkVersion 16
+        targetSdkVersion 30
+
+        // MM = major version
+        // mm = minor version
+        // pp = patch version
+        // xx = extra (00 should be release)
+        //          MMmmppxx
+        versionCode    10000
+        versionName "0.1.0"
+
+        multiDexEnabled true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    packagingOptions {
+        exclude "/META-INF/*.version"
+        exclude "**/kotlin/**"
+        exclude "**/*.txt"
+        exclude "**/*.xml"
+        exclude "**/*.properties"
+
+        // https://github.com/Kotlin/kotlinx.coroutines#avoiding-including-the-debug-infrastructure-in-the-resulting-apk
+        exclude "DebugProbesKt.bin"
+    }
+
+    buildTypes {
+        release {
+            // Turn on debuggable to force multiple classes.dex generation
+            debuggable true
+        }
+    }
+
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation 'androidx.multidex:multidex:2.0.1'
+}
